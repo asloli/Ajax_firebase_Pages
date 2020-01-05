@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Login V20</title>
+	<title>海豹論壇</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -26,9 +26,24 @@
 	<link rel="stylesheet" type="text/css" href="css/util.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 <!--===============================================================================================-->
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.7.1/firebase.js"></script>
+	<script>	// Initialize Firebase
+		var config = {
+		apiKey: "AIzaSyAzmyKb0HKvgXDoSs1GqcnAlWsKK-2L-_M",
+		authDomain: "myfirstfirebase-89687.firebaseapp.com",
+		databaseURL: "https://myfirstfirebase-89687.firebaseio.com",
+		projectId: "myfirstfirebase-89687",
+		storageBucket: "myfirstfirebase-89687.appspot.com",
+		messagingSenderId: "316712640812",
+		appId: "1:316712640812:web:b3ca1e420a2c33e60a4c89",
+		measurementId: "G-5M70YFT3S0"
+		};
+		firebase.initializeApp(config);
+	</script>
+<!--===============================================================================================-->
 </head>
 <body>
-	
 	<script type="text/javascript">
 		function login() {
 			username = document.getElementsByName("username")[0].value;
@@ -50,6 +65,41 @@
 			location.href=pageName+"?username="+username
 								  +"&password="+password
 		}
+		/*$(document).ready(function(){
+			$("#SignIn").click(function(){
+				var username 		=$('#username').val();
+				var password 	=$('#pass').val();
+				firebase.auth().signInWithEmailAndPassword(username, pass).catch((error) => {
+					// Handle Errors here.
+					const errorCode = error.code;
+					const errorMessage = error.message;
+					alert(errorMessage)
+				})
+			});
+			var userLogin;
+			firebase.auth().onAuthStateChanged(function(user) {
+				if (username) {
+				userLogin = user;
+					alert("User is logined")
+				} else {
+					userLogin = null;
+					alert("User is not logined yet.");
+				}
+			});
+
+			$("#SignOut").click(function(){
+				firebase.auth().signOut().then(function() {
+					console.log("User sign out!");
+				}, function(error) {
+				console.log("User sign out error!");
+				})
+			});
+
+			$("#getUID").click(function(){
+				if (userLogin)
+					alert(userLogin['uid']);
+            });                         
+        });*/   
 	</script>
 	<div class="limiter">
 		<div class="container-login100">

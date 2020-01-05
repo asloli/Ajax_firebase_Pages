@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<title>Login V20</title>
+<head> 
+	<title>海豹論壇</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -26,6 +26,22 @@
 	<link rel="stylesheet" type="text/css" href="css/util.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 <!--===============================================================================================-->
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.7.1/firebase.js"></script>
+	<script>	// Initialize Firebase
+		var config = {
+		apiKey: "AIzaSyAzmyKb0HKvgXDoSs1GqcnAlWsKK-2L-_M",
+		authDomain: "myfirstfirebase-89687.firebaseapp.com",
+		databaseURL: "https://myfirstfirebase-89687.firebaseio.com",
+		projectId: "myfirstfirebase-89687",
+		storageBucket: "myfirstfirebase-89687.appspot.com",
+		messagingSenderId: "316712640812",
+		appId: "1:316712640812:web:b3ca1e420a2c33e60a4c89",
+		measurementId: "G-5M70YFT3S0"
+		};
+		firebase.initializeApp(config);
+	</script>
+<!--===============================================================================================-->
 </head>
 <body>
 	
@@ -45,7 +61,7 @@
 						document.getElementById("div1").style.display="None"
 					}
 					else{
-						document.getElementById("word").innerHTML = "Wrong Username or Password"
+						document.getElementById("word").innerHTML = "帳號或密碼有誤"
 					}
 
 				}
@@ -66,7 +82,7 @@
 			<div class="wrap-login100 p-b-160 p-t-50" id="div1" >
 				<div class="login100-form validate-form">
 					<span class="login100-form-title p-b-43" id="word">
-						Account Login
+						海豹聊天室
 					</span>
 					
 					<div class="wrap-input100 rs1 validate-input" data-validate = "Username is required">
