@@ -26,40 +26,84 @@
 	<link rel="stylesheet" type="text/css" href="css/util.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 <!--===============================================================================================-->
+	<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-analytics.js"></script>
+	<script>
+		// Initialize Firebase
+		var config = {
+			apiKey: "AIzaSyAzmyKb0HKvgXDoSs1GqcnAlWsKK-2L-_M",
+			authDomain: "myfirstfirebase-89687.firebaseapp.com",
+			databaseURL: "https://myfirstfirebase-89687.firebaseio.com",
+			projectId: "myfirstfirebase-89687",
+			storageBucket: "myfirstfirebase-89687.appspot.com",
+			messagingSenderId: "316712640812",
+			appId: "1:316712640812:web:b3ca1e420a2c33e60a4c89",
+			measurementId: "G-5M70YFT3S0"
+		};
+		firebase.initializeApp(config);
+		var db = firebase.database(); 
+	</script>
+<!--===============================================================================================-->
+	<script>
+        function writeNewPost(uid, username, title, body) {
+          // 帖子條目
+          var postData = {
+            author: username,
+            uid: uid,
+            body: body,
+            title: title,
+            starCount: 0
+          };
+          // 獲取新帖子的密鑰
+          var newPostKey = db.ref().child('posts').push().key;
+          // 在帖子列表和用戶的帖子列表中同時寫入新帖子的數據。
+          var updates = {};
+          updates['/posts/' + newPostKey] = postData;
+          //updates['/user-posts/' + uid + '/' + newPostKey] = postData;
+          return db.ref().update(updates);
+        }   
+
+        function display_posts(data_val){
+          keys = Object.keys(data_val);
+          posts = '';
+              
+          for (var i = keys.length - 1; i >= 0; i--) {
+              posts += 'UserID: '+data_val[keys[i]]['uid']+'<br>';
+              posts += 'Author: '+data_val[keys[i]]['author']+'<br>';
+              posts += 'Title: '+data_val[keys[i]]['title']+'<br>';
+              posts += 'Body: '+data_val[keys[i]]['body']+'<br>';
+              posts += 'Star: '+data_val[keys[i]]['starCount']+'<br>';
+              posts += '----------------------<br>';
+              posts += '----------------------<br>';
+          }
+
+          $('#data').html(posts); 
+        } 
+
+        function query() {
+
+        	db.ref('posts/').once('value', function(snapshot) {
+              display_posts(snapshot.val());
+            });   
+
+        }           
+        
+        $(document).ready(function(){  
+            $("#update_test").click(function(){
+                var uid         = $('#update_uid').val();
+                var username    = $('#update_username').val();
+                var title       = $('#update_title').val();
+                var body        = $('#update_body').val();
+                writeNewPost(uid, username, title, body);
+            }); 
+            $("#query_test").click(function(){
+                query();
+            });               
+            
+        });         
+    </script>
 </head>
 <body>
-	
-	<script type="text/javascript">
-		function login() {
-			username = document.getElementsByName("username")[0].value;
-			password = document.getElementsByName("pass")[0].value;
-			//console.log(username);
-			//console.log(password);
-
-			var xhttp = new XMLHttpRequest();
-			xhttp.onreadystatechange = function() {
-				if (this.readyState == 4 && this.status == 200) {
-					console.log(this.responseText);
-					if(this.responseText == 1){
-						document.getElementById("div2").style.display=""
-						document.getElementById("div1").style.display="None"
-					}
-					else{
-						document.getElementById("word").innerHTML = "錯誤的帳號或密碼"
-					}
-
-				}
-			};
-			xhttp.open("GET", "login.php?"+
-						"username="+username+
-						"&password="+password
-						, true);
-			xhttp.send();
-		}
-		function changePage(pageName){
-			location.href=pageName+"?username="+username
-								  +"&password="+password
-		}
 	</script>
 	<div class="limiter">
 		<div class="container-login100">
@@ -79,76 +123,10 @@
 						<input class="input100" type="password" name="pass">
 						<span class="label-input100">Password</span>
 					</div>
-
-					<div class="container-login100-form-btn">
-						<button class="login100-form-btn" onclick="login()">
-							Login
-						</button>
-					</div>
-					
-					<div class="text-center w-full p-t-23">
-						<a href="register.html" class="txt1">
-							register
-						</a>
-					</div>
-				</div>
-			</div>
-			<div class="wrap-login100 p-b-160 p-t-50" id="div2" style="display:none">
-				<div class="login100-form validate-form">
-					<span class="login100-form-title p-b-43">
-						您已登入海豹論壇
-					</span>
-					<div class="container-login100-form-btn">
-						<button class="btn btn-secondary btn-lg btn-block" onclick="changePage('UserList.html')">
-							用戶清單
-						</button>
-					</div>
-					<div class="container-login100-form-btn">
-						<button class="btn btn-secondary btn-lg btn-block" onclick="changePage('forum.html')">
-							海豹論壇
-						</button>
-					</div>
-					<div class="container-login100-form-btn">
-						<button class="btn btn-secondary btn-lg btn-block" onclick="changePage('BBB.html')">
-							海豹聊天室
-						</button>
-					</div>
-					<div class="container-login100-form-btn">
-						<button class="btn btn-secondary btn-lg btn-block" onclick="changePage('DeleteAccount.html')">
-							帳號刪除
-						</button>
-					</div>
-					<div class="container-login100-form-btn">
-						<button class="btn btn-secondary btn-lg btn-block" onclick="changePage('ChangePassword.html')">
-							更改密碼
-						</button>
-					</div>
-					<div class="container-login100-form-btn">
-						<button class="btn btn-secondary btn-lg btn-block" onclick="location.href='index.html'">
-							Log Out
-						</button>
-					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
-	
-	<script type="text/javascript">
-		var url = new URL(location.href);
-		username = url.searchParams.get('username'); 
-		password = url.searchParams.get('password'); 
-		console.log("start", username, password)
-		if(username == null || username == "null"){
-			
-		}
-		else{
-			document.getElementById("div2").style.display=""
-			document.getElementById("div1").style.display="None"
-		}
-	</script>
-	
-	
 <!--===============================================================================================-->
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
