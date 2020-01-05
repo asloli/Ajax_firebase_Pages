@@ -102,6 +102,7 @@
             
         });         
     </script>
+<!--===============================================================================================-->
 </head>
 <body>
 	</script>
@@ -113,15 +114,45 @@
 						海豹論壇
 					</span>
 					
-					<div class="wrap-input100 rs1 validate-input" data-validate = "Username is required">
-						<input class="input100" type="text" name="username">
-						<span class="label-input100">Username</span>
+					<div class="wrap-input100 rs1 validate-input">
+						<input class="input100" type="text" id="update_uid">
+						<span class="label-input100">UID</span>
 					</div>
 					
+					<div class="wrap-input100 rs2 validate-input">
+						<input class="input100" type="text" id="update_username">
+						<span class="label-input100">名稱</span>
+					</div>
+
+					<div class="wrap-input100 rs3 validate-input">
+						<input class="input100" type="text" id="update_title">
+						<span class="label-input100">標題</span>
+					</div>
+
+					<div class="wrap-input100 rs4 validate-input">
+						<input class="input100" type="text" id="update_body">
+						<span class="label-input100">內文</span>
+					</div>
+
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn" id="update_test">
+							發送
+						</button>
+
+					</div>
 					
-					<div class="wrap-input100 rs2 validate-input" data-validate="Password is required">
-						<input class="input100" type="password" name="pass">
-						<span class="label-input100">Password</span>
+					<div class="text-center w-full p-t-23">
+						<a class="txt1">
+							<div class="container-login100-form-btn">
+								<button class="login100-form-btn" id="query_test">
+									查詢發文
+								</button>
+							</div>
+							<span class="login100-form-title p-b-43">
+								-----[所有的貼文]-----
+							</span>
+							<label  id="data"></label><br>
+						</a>
 					</div>
 				</div>
 			</div>
