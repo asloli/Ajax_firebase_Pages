@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> 
-	<title>海豹論壇</title>
+<head>
+	<title>Login V20</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -26,155 +26,9 @@
 	<link rel="stylesheet" type="text/css" href="css/util.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 <!--===============================================================================================-->
-	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/5.7.1/firebase.js"></script>
-	<script>	// Initialize Firebase
-		var config = {
-		apiKey: "AIzaSyAzmyKb0HKvgXDoSs1GqcnAlWsKK-2L-_M",
-		authDomain: "myfirstfirebase-89687.firebaseapp.com",
-		databaseURL: "https://myfirstfirebase-89687.firebaseio.com",
-		projectId: "myfirstfirebase-89687",
-		storageBucket: "myfirstfirebase-89687.appspot.com",
-		messagingSenderId: "316712640812",
-		appId: "1:316712640812:web:b3ca1e420a2c33e60a4c89",
-		measurementId: "G-5M70YFT3S0"
-		};
-		firebase.initializeApp(config);
-	</script>
-	<script>
-		$(document).ready(function(){  
-			$("#SignIn").click(function(){
-				var email		 = $('#email').val();
-				var password	= $('#pewd').val();
-				firebase.auth().signInWithEmailAndPassword(email, password).catch((error) => {
-					// Handle Errors here.
-					const errorCode = error.code;
-					const errorMessage = error.message;
-					// ...
-					alert(errorMessage);
-				})
-			});
-			var userLogin;
-			firebase.auth().onAuthStateChanged(function(user) {
-				if (user) {
-					userLogin = user;
-					alert("User is logined");
-				} else {
-					userLogin = null;
-					alert("User is not logined yet.");
-				}
-			});				
-			$("#SignOut").click(function(){
-				firebase.auth().signOut().then(function() {
-					console.log("User sign out!");
-				}, function(error) {
-					console.log("User sign out error!");					})
-			});
-			$("#getUID").click(function(){
-				if (userLogin)
-					alert(userLogin['uid']);
-			});						 
-		});		 
-	</script>
-<!--===============================================================================================-->
-	<script>
-		$(document).ready(function(){  
-			var provider = new firebase.auth.FacebookAuthProvider();
-			//所需授權的Scope 
-			provider.addScope('user_birthday');
-			provider.setCustomParameters({'display': 'popup'});
-
-			var userLogin;
-
-			firebase.auth().onAuthStateChanged(function(user) {
-				if (user) {
-					userLogin = user;
-					alert("User is logined")
-				} else {
-					userLogin = null;
-					alert("User is not logined yet.");
-				}
-			});
-			$("#SignInFB").click(function(){   	
-				firebase.auth().signInFBWithPopup(provider).then(function(result) {
-					// 取得FB Token，可以使用於FB API中
-					var token = result.credential.accessToken;
-					// 使用者資料
-					userLogin = result.user;
-					alert("成功使用 Facebook 帳號登入！");
-				}).catch(function(error) {
-					// Handle Errors here.
-					var errorCode = error.code;
-					var errorMessage = error.message;
-					// The email of the user's account used.
-					var email = error.email;
-					// The firebase.auth.AuthCredential type that was used.
-					var credential = error.credential;
-					alert(errorMessage)
-				});
-			});
-			$("#SignOut").click(function(){
-				firebase.auth().signOut().then(function() {
-					console.log("User sign out!");
-				}, function(error) {
-					console.log("User sign out error!");
-				})
-			});
-			$("#getUID").click(function(){
-				if (userLogin)
-					alert(userLogin['uid']);
-			});
-		});
-	</script>
-<!--===============================================================================================-->
-	<script>
-		$(document).ready(function(){  
-			var provider = new firebase.auth.GoogleAuthProvider();
-			//所需授權的Scope 
-			provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-			provider.setCustomParameters({'login_hint': 'user@example.com'});
-			var userLogin;
-			firebase.auth().onAuthStateChanged(function(user) {
-				if (user) {
-					userLogin = user;
-					alert("User is logined")
-				} else {
-					userLogin = null;
-					alert("User is not logined yet.");
-				}
-			});
-			$("#SignIngoogle").click(function(){
-				firebase.auth().signIngoogleWithPopup(provider).then(function(result) {
-					// 取得google Token，可以使用於google API中
-					var token = result.credential.accessToken;
-					// 使用者資料
-					userLogin = result.user;
-					alert("成功使用 Google 帳號登入！");
-				}).catch(function(error) {
-					// Handle Errors here.
-					var errorCode = error.code;
-					var errorMessage = error.message;
-					// The email of the user's account used.
-					var email = error.email;
-					// The firebase.auth.AuthCredential type that was used.
-					var credential = error.credential;
-					alert(errorMessage)
-				});
-			});
-			$("#SignOut").click(function(){
-				firebase.auth().signOut().then(function() {
-					console.log("User sign out!");
-				}, function(error) {
-					console.log("User sign out error!");
-				})
-			});
-			$("#getUID").click(function(){
-				if (userLogin)
-					alert(userLogin['uid']);
-			});	
-		});	
-	</script>
-<!--===============================================================================================-->
+</head>
+<body>
+	
 	<script type="text/javascript">
 		function login() {
 			username = document.getElementsByName("username")[0].value;
@@ -196,36 +50,38 @@
 
 				}
 			};
+			xhttp.open("GET", "login.php?"+
+						"username="+username+
+						"&password="+password
+						, true);
+			xhttp.send();
 		}
 		function changePage(pageName){
 			location.href=pageName+"?username="+username
 								  +"&password="+password
 		}
 	</script>
-<!--===============================================================================================-->
-</head>
-<body>
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100 p-b-160 p-t-50" id="div1" >
 				<div class="login100-form validate-form">
 					<span class="login100-form-title p-b-43" id="word">
-						海豹論壇
+						Account Login
 					</span>
 					
 					<div class="wrap-input100 rs1 validate-input" data-validate = "Username is required">
-						<input class="input100" type="text" id="email">
-						<span class="label-input100">Email</span>
+						<input class="input100" type="text" name="username">
+						<span class="label-input100">Username</span>
 					</div>
 					
 					
 					<div class="wrap-input100 rs2 validate-input" data-validate="Password is required">
-						<input class="input100" type="text" id="pewd">
+						<input class="input100" type="password" name="pass">
 						<span class="label-input100">Password</span>
 					</div>
 
 					<div class="container-login100-form-btn">
-						<button class="login100-form-btn" id="SignIn"  onclick="login()">
+						<button class="login100-form-btn" onclick="login()">
 							Login
 						</button>
 					</div>
@@ -233,16 +89,6 @@
 					<div class="text-center w-full p-t-23">
 						<a href="register.html" class="txt1">
 							register
-						</a>
-					</div>
-					<div class="text-center w-full p-t-23">
-						<a class="txt1" id="SignIngoogle"  onclick="logingoogle()">
-							<i>從google登入</i>
-						</a>
-					</div>
-					<div class="text-center w-full p-t-23">
-						<a class="txt1" id="SignInFB" onclick="loginFB()">
-							<i>從facebook登入</i>
 						</a>
 					</div>
 				</div>
@@ -276,6 +122,23 @@
 			</div>
 		</div>
 	</div>
+	
+	
+	<script type="text/javascript">
+		var url = new URL(location.href);
+		username = url.searchParams.get('username'); 
+		password = url.searchParams.get('password'); 
+		console.log("start", username, password)
+		if(username == null || username == "null"){
+			
+		}
+		else{
+			document.getElementById("div2").style.display=""
+			document.getElementById("div1").style.display="None"
+		}
+	</script>
+	
+	
 <!--===============================================================================================-->
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>海豹論壇</title>
+	<title>Login V20</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
@@ -26,72 +26,76 @@
 	<link rel="stylesheet" type="text/css" href="css/util.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 <!--===============================================================================================-->
-	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/5.7.1/firebase.js"></script>
-	<script>	// Initialize Firebase
-		var config = {
-		apiKey: "AIzaSyAzmyKb0HKvgXDoSs1GqcnAlWsKK-2L-_M",
-		authDomain: "myfirstfirebase-89687.firebaseapp.com",
-		databaseURL: "https://myfirstfirebase-89687.firebaseio.com",
-		projectId: "myfirstfirebase-89687",
-		storageBucket: "myfirstfirebase-89687.appspot.com",
-		messagingSenderId: "316712640812",
-		appId: "1:316712640812:web:b3ca1e420a2c33e60a4c89",
-		measurementId: "G-5M70YFT3S0"
-		};
-		firebase.initializeApp(config);
-	</script>
-	<script>
-			//註冊
-			$(document).ready(function(){
-				$("#SignUp").click(function(){
-					var email         = $('#email').val();
-					var password    = $('#pewd').val();
-					firebase.auth().createUserWithEmailAndPassword(email, password).catch((error) => {
-					// Handle Errors here.
-						const errorCode = error.code;
-						const errorMessage = error.message;
-					// ...
-						alert(errorMessage)
-					}).then(function (error) {
-						if (error.code != 400)
-							alert("成功創建用戶認證！");
-							window.location.href = "index.html";
-					});
-				});
-			});
-	</script>
-<!--===============================================================================================-->
 </head>
 <body>
+	
+	<script type="text/javascript">
+		function login() {
+			username = document.getElementsByName("username")[0].value;
+			password = document.getElementsByName("pass")[0].value;
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					console.log(this.responseText);
+					changePage("index.html");
+				}
+			};
+			xhttp.open("GET", "register.php?"+
+						"username="+username+
+						"&password="+password
+						, true);
+			xhttp.send();
+		}
+		function changePage(pageName){
+			location.href=pageName+"?username="+username
+								  +"&password="+password
+		}
+	</script>
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100 p-b-160 p-t-50" id="div1" >
 				<div class="login100-form validate-form">
 					<span class="login100-form-title p-b-43" id="word">
-						註冊帳號
+						Register
 					</span>
 					
 					<div class="wrap-input100 rs1 validate-input" data-validate = "Username is required">
-						<input class="input100" type="text" id="email">
+						<input class="input100" type="text" name="username">
 						<span class="label-input100">Username</span>
 					</div>
 					
 					
 					<div class="wrap-input100 rs2 validate-input" data-validate="Password is required">
-						<input class="input100" type="password" id="pewd">
+						<input class="input100" type="password" name="pass">
 						<span class="label-input100">Password</span>
 					</div>
 
 					<div class="container-login100-form-btn">
-						<button class="login100-form-btn" onclick="login()" id="SignUp">
-							註冊
+						<button class="login100-form-btn" onclick="login()">
+							register
 						</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	
+	
+	<script type="text/javascript">
+		var url = new URL(location.href);
+		username = url.searchParams.get('username'); 
+		password = url.searchParams.get('password'); 
+		console.log("start", username, password)
+		if(username == null || username == "null"){
+			
+		}
+		else{
+			document.getElementById("div2").style.display=""
+			document.getElementById("div1").style.display="None"
+		}
+	</script>
+	
+	
 <!--===============================================================================================-->
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->

@@ -4,7 +4,7 @@
 	$servername = "localhost";
 	$username = "root";
 	$password = "";
-	$dbname = "1028";
+	$dbname = "1027";
 	// Create connection
 	$conn = new mysqli($servername, $username, $password, $dbname);
 	// Check connection
@@ -15,7 +15,7 @@
 	    die("Connection failed: " . $conn->connect_error);
 	} 
 	
-	$sql = 'INSERT INTO userInfo(email, password) VALUES ("'.$_REQUEST["email"].'","'.$_REQUEST["password"].'")';
+	$sql = 'INSERT INTO userInfo(name, password) VALUES ("'.$_REQUEST["username"].'","'.$_REQUEST["password"].'")';
 
 	$result = $conn->query($sql);
     echo 0;

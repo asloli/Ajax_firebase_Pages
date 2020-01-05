@@ -4,7 +4,7 @@
 	$servername = "localhost";
 	$username = "root";
 	$password = "";
-	$dbname = "1028";
+	$dbname = "1027";
 	// Create connection
 	$conn = new mysqli($servername, $username, $password, $dbname);
 	// Check connection
@@ -15,7 +15,7 @@
 	    die("Connection failed: " . $conn->connect_error);
 	} 
 
-	$sql = 'DELETE FROM userInfo WHERE email="'.$_REQUEST["username"].'"';
+	$sql = 'DELETE FROM userInfo WHERE name="'.$_REQUEST["username"].'"';
 
 	$result = $conn->query($sql);
     echo 0;
