@@ -65,63 +65,41 @@
 			location.href=pageName+"?username="+username
 								  +"&password="+password
 		}
-		/*$(document).ready(function(){
-			$("#SignIn").click(function(){
-				var username 		=$('#username').val();
-				var password 	=$('#pass').val();
-				firebase.auth().signInWithEmailAndPassword(username, pass).catch((error) => {
+		$(document).ready(function(){  
+			$("#SignUp").click(function(){
+				var username         = $('#username').val();
+				var password    = $('#password').val();
+				firebase.auth().createUserWithEmailAndPassword(username, password).catch((error) => {
 					// Handle Errors here.
 					const errorCode = error.code;
 					const errorMessage = error.message;
+					// ...
 					alert(errorMessage)
-				})
+				}).then(function (error) { if (error.code != 400) alert("成功創建用戶認證！"); });
 			});
-			var userLogin;
-			firebase.auth().onAuthStateChanged(function(user) {
-				if (username) {
-				userLogin = user;
-					alert("User is logined")
-				} else {
-					userLogin = null;
-					alert("User is not logined yet.");
-				}
-			});
-
-			$("#SignOut").click(function(){
-				firebase.auth().signOut().then(function() {
-					console.log("User sign out!");
-				}, function(error) {
-				console.log("User sign out error!");
-				})
-			});
-
-			$("#getUID").click(function(){
-				if (userLogin)
-					alert(userLogin['uid']);
-            });                         
-        });*/   
+		});
 	</script>
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100 p-b-160 p-t-50" id="div1" >
 				<div class="login100-form validate-form">
 					<span class="login100-form-title p-b-43" id="word">
-						Register
+						註冊帳號
 					</span>
 					
 					<div class="wrap-input100 rs1 validate-input" data-validate = "Username is required">
-						<input class="input100" type="text" name="username">
+						<input class="input100" type="text" name="username" id="username" placeholder="username">
 						<span class="label-input100">Username</span>
 					</div>
 					
 					
 					<div class="wrap-input100 rs2 validate-input" data-validate="Password is required">
-						<input class="input100" type="password" name="pass">
+						<input class="input100" type="password" name="pass" id="password" placeholder="password">
 						<span class="label-input100">Password</span>
 					</div>
 
 					<div class="container-login100-form-btn">
-						<button class="login100-form-btn" onclick="login()">
+						<button class="login100-form-btn" onclick="login()" id="SignUp">
 							register
 						</button>
 					</div>

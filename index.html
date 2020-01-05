@@ -44,7 +44,6 @@
 <!--===============================================================================================-->
 </head>
 <body>
-	
 	<script type="text/javascript">
 		function login() {
 			username = document.getElementsByName("username")[0].value;
@@ -77,12 +76,27 @@
 								  +"&password="+password
 		}
 	</script>
+
+	<script type="text/javascript">
+		var url = new URL(location.href);
+		username = url.searchParams.get('username'); 
+		password = url.searchParams.get('password'); 
+		console.log("start", username, password)
+		if(username == null || username == "null"){
+			
+		}
+		else{
+			document.getElementById("div2").style.display=""
+			document.getElementById("div1").style.display="None"
+		}
+	</script>
+
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100 p-b-160 p-t-50" id="div1" >
 				<div class="login100-form validate-form">
 					<span class="login100-form-title p-b-43" id="word">
-						海豹聊天室
+						海豹論壇
 					</span>
 					
 					<div class="wrap-input100 rs1 validate-input" data-validate = "Username is required">
@@ -105,6 +119,16 @@
 					<div class="text-center w-full p-t-23">
 						<a href="register.html" class="txt1">
 							register
+						</a>
+					</div>
+					<div class="text-center w-full p-t-23">
+						<a href="signIn_google.html" class="txt1">
+							<i> 從google登入</i>
+						</a>
+					</div>
+					<div class="text-center w-full p-t-23">
+						<a href="signIn_fb.html" class="txt1">
+							<i> 從facebook登入</i>
 						</a>
 					</div>
 				</div>
@@ -138,23 +162,6 @@
 			</div>
 		</div>
 	</div>
-	
-	
-	<script type="text/javascript">
-		var url = new URL(location.href);
-		username = url.searchParams.get('username'); 
-		password = url.searchParams.get('password'); 
-		console.log("start", username, password)
-		if(username == null || username == "null"){
-			
-		}
-		else{
-			document.getElementById("div2").style.display=""
-			document.getElementById("div1").style.display="None"
-		}
-	</script>
-	
-	
 <!--===============================================================================================-->
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->

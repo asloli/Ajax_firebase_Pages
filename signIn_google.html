@@ -44,23 +44,18 @@
 <!--===============================================================================================-->
 </head>
 <body>
-	
 	<script type="text/javascript">
-		var url = new URL(location.href);
-		username = url.searchParams.get('username'); 
-		password = url.searchParams.get('password'); 
-		function ajax() {
-
+		function login() {
+			username = document.getElementsByName("username")[0].value;
+			password = document.getElementsByName("pass")[0].value;
 			var xhttp = new XMLHttpRequest();
 			xhttp.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
 					console.log(this.responseText);
-					username = null;
-					password = null;
-					changePage('index.html');
+					changePage("index.html");
 				}
 			};
-			xhttp.open("GET", "delete.php?"+
+			xhttp.open("GET", "register.php?"+
 						"username="+username+
 						"&password="+password
 						, true);
@@ -70,34 +65,81 @@
 			location.href=pageName+"?username="+username
 								  +"&password="+password
 		}
+		$(document).ready(function(){  
+			$("#SignUp").click(function(){
+				var username         = $('#username').val();
+				var password    = $('#password').val();
+				firebase.auth().createUserWithEmailAndPassword(username, password).catch((error) => {
+					// Handle Errors here.
+					const errorCode = error.code;
+					const errorMessage = error.message;
+					// ...
+					alert(errorMessage)
+				}).then(function (error) { if (error.code != 400) alert("成功創建用戶認證！"); });
+			});
+		});
+	</script>
+	
+	<script>
+		$(document).ready(function(){  
+			var provider = new firebase.auth.FacebookAuthProvider();
+			//所需授權的Scope 
+			provider.addScope('user_birthday');
+			provider.setCustomParameters({'display': 'popup'});
+
+			var userLogin;
+
+			firebase.auth().onAuthStateChanged(function(user) {
+				if (user) {
+					userLogin = user;
+					alert("User is logined")
+				} else {
+					userLogin = null;
+					alert("User is not logined yet.");
+				}
+			});
+			$("#SignIn").click(function(){   	
+				firebase.auth().signInWithPopup(provider).then(function(result) {
+					// 取得FB Token，可以使用於FB API中
+					var token = result.credential.accessToken;
+					// 使用者資料
+					userLogin = result.user;
+					alert("成功使用 Facebook 帳號登入！");
+				}).catch(function(error) {
+					// Handle Errors here.
+					var errorCode = error.code;
+					var errorMessage = error.message;
+					// The email of the user's account used.
+					var email = error.email;
+					// The firebase.auth.AuthCredential type that was used.
+					var credential = error.credential;
+					alert(errorMessage)
+				});
+			});
+			$("#SignOut").click(function(){
+				firebase.auth().signOut().then(function() {
+					console.log("User sign out!");
+				}, function(error) {
+					console.log("User sign out error!");
+				})
+			});
+			$("#getUID").click(function(){
+				if (userLogin)
+					alert(userLogin['uid']);
+			});
+		});
 	</script>
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100 p-b-160 p-t-50" id="div1" >
 				<div class="login100-form validate-form">
-					<span class="login100-form-title p-b-43">
-						You Sure?
-					</span>
+					<span class="login100-form-title p-b-43" id="word">
+						註冊帳號
+					</span>	
+
 					<div class="container-login100-form-btn">
-						<button class="btn btn-secondary btn-lg btn-block" onclick="ajax()">
-							Yes
-						</button>
-					</div>
-					<div class="container-login100-form-btn">
-						<button class="btn btn-secondary btn-lg btn-block" onclick="changePage('index.html')">
-							No
-						</button>
-					</div>
-				</div>
-			</div>
-			<div class="wrap-login100 p-b-160 p-t-50" id="div2" style="display:none">
-				<div class="login100-form validate-form">
-					<span class="login100-form-title p-b-43">
-						Good Choise
-					</span>
-					<div class="container-login100-form-btn">
-						<button class="btn btn-secondary btn-lg btn-block" onclick="changePage('index.html')">
-							back
+						<button class="login100-form-btn" onclick="login()" id="SignIn">
+							點此已返回頁面
 						</button>
 					</div>
 				</div>
@@ -105,9 +147,19 @@
 		</div>
 	</div>
 	
-	
-
-	
+	<script type="text/javascript">
+		var url = new URL(location.href);
+		username = url.searchParams.get('username'); 
+		password = url.searchParams.get('password'); 
+		console.log("start", username, password)
+		if(username == null || username == "null"){
+			
+		}
+		else{
+			document.getElementById("div2").style.display=""
+			document.getElementById("div1").style.display="None"
+		}
+	</script>
 	
 <!--===============================================================================================-->
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
@@ -125,6 +177,5 @@
 	<script src="vendor/countdowntime/countdowntime.js"></script>
 <!--===============================================================================================-->
 	<script src="js/main.js"></script>
-
 </body>
 </html>
