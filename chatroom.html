@@ -45,60 +45,40 @@
 	</script>
 <!--===============================================================================================-->
 	<script>
-        function writeNewPost(uid, username, title, body) {
-          // 帖子條目
-          var postData = {
-            author: username,
-            uid: uid,
-            body: body,
-            title: title,
-            starCount: 0
-          };
-          // 獲取新帖子的密鑰
-          var newPostKey = db.ref().child('posts').push().key;
-          // 在帖子列表和用戶的帖子列表中同時寫入新帖子的數據。
-          var updates = {};
-          updates['/posts/' + newPostKey] = postData;
-          //updates['/user-posts/' + uid + '/' + newPostKey] = postData;
-          return db.ref().update(updates);
-        }   
+        function push(name, msg) {
+          
+          var key = db.ref('message/').push({
+            username: name,
+            message: msg
+          }).key;
 
-        function display_posts(data_val){
-          keys = Object.keys(data_val);
-          posts = '';
-              
-          for (var i = keys.length - 1; i >= 0; i--) {
-              posts += 'ID: '+data_val[keys[i]]['uid']+'<br>';
-              posts += 'Name: '+data_val[keys[i]]['author']+'<br>';
-              posts += '標題: '+data_val[keys[i]]['title']+'<br>';
-              posts += '說: '+data_val[keys[i]]['body']+'<br>';
-              posts += '-----------------------------------------<br>';
-              posts += '-----------------------------------------<br>';
-          }
-
-          $('#data').html(posts); 
-        } 
-
-        function query() {
-
-        	db.ref('posts/').once('value', function(snapshot) {
-              display_posts(snapshot.val());
-            });   
-
-        }           
+          //alert("Push key = "+key);
+          
+        }        
         
-        $(document).ready(function(){  
-            $("#update_test").click(function(){
-                var uid         = $('#update_uid').val();
-                var username    = $('#update_username').val();
-                var title       = $('#update_title').val();
-                var body        = $('#update_body').val();
-                writeNewPost(uid, username, title, body);
-            }); 
-            $("#query_test").click(function(){
-                query();
-            });               
-            
+        
+        $(document).ready(function(){ 
+
+            $("#push_test").click(function(){
+                var name         = $('#push_name').val();
+                var msg          = $('#push_msg').val();
+                push(name, msg);
+            });  
+
+            function display_msgs(data_val){
+              keys = Object.keys(data_val);
+              msgs = '';
+              
+              for (var i = keys.length - 1; i >= 0; i--) {
+                msgs += data_val[keys[i]]['username'] +': '+ data_val[keys[i]]['message']+'<br>';
+              }
+              $('#data').html(msgs); 
+            }
+
+            db.ref('message/').on('value', function(snapshot) {
+              display_msgs(snapshot.val());
+            });  
+
         });         
     </script>
 <!--===============================================================================================-->
@@ -110,31 +90,21 @@
 			<div class="wrap-login100 p-b-160 p-t-50" id="div1" >
 				<div class="login100-form validate-form">
 					<span class="login100-form-title p-b-43" id="word">
-						海豹論壇
+						海豹聊天室
 					</span>
 					
 					<div class="wrap-input100 rs1 validate-input">
-						<input class="input100" type="text" id="update_uid" value="000">
-						<span class="label-input100">UID</span>
+						<input class="input100" type="text" id="push_name" value="匿名">
+						<span class="label-input100">暱稱</span>
 					</div>
 					
 					<div class="wrap-input100 rs2 validate-input">
-						<input class="input100" type="text" id="update_username" value="匿名">
-						<span class="label-input100">名稱</span>
-					</div>
-
-					<div class="wrap-input100 rs3 validate-input">
-						<input class="input100" type="text" id="update_title" value="無本文">
-						<span class="label-input100">標題</span>
-					</div>
-
-					<div class="wrap-input100 rs4 validate-input">
-						<input class="input100" type="text" id="update_body" value="無本文">
-						<span class="label-input100">內文</span>
+						<input class="input100" type="text" id="push_msg">
+						<span class="label-input100">訊息</span>
 					</div>
 
 					<div class="container-login100-form-btn">
-						<button class="login100-form-btn" id="update_test">
+						<button class="login100-form-btn" id="push_test">
 							發送
 						</button>
 
@@ -144,11 +114,11 @@
 						<a class="txt1">
 							<div class="container-login100-form-btn">
 								<button class="login100-form-btn" id="query_test">
-									查詢發文
+									聊天室
 								</button>
 							</div>
 							<span class="login100-form-title p-b-43">
-								---------------[所有的貼文]---------------
+								-----------------------------------------
 							</span>
 							<label  class="login100-form-title p-b-43" id="data"></label>
 						</a>
