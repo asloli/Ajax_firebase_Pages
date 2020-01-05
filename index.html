@@ -41,56 +41,142 @@
 		};
 		firebase.initializeApp(config);
 	</script>
+	<script>
+		$(document).ready(function(){  
+			$("#SignIn").click(function(){
+				var email		 = $('#email').val();
+				var password	= $('#pewd').val();
+				firebase.auth().signInWithEmailAndPassword(email, password).catch((error) => {
+					// Handle Errors here.
+					const errorCode = error.code;
+					const errorMessage = error.message;
+					// ...
+					alert(errorMessage);
+				})
+			});
+			var userLogin;
+			firebase.auth().onAuthStateChanged(function(user) {
+				if (user) {
+					userLogin = user;
+					alert("User is logined");
+				} else {
+					userLogin = null;
+					alert("User is not logined yet.");
+				}
+			});				
+			$("#SignOut").click(function(){
+				firebase.auth().signOut().then(function() {
+					console.log("User sign out!");
+				}, function(error) {
+					console.log("User sign out error!");					})
+			});
+			$("#getUID").click(function(){
+				if (userLogin)
+					alert(userLogin['uid']);
+			});						 
+		});		 
+	</script>
+<!--===============================================================================================-->
+	<script>
+		$(document).ready(function(){  
+			var provider = new firebase.auth.FacebookAuthProvider();
+			//所需授權的Scope 
+			provider.addScope('user_birthday');
+			provider.setCustomParameters({'display': 'popup'});
+
+			var userLogin;
+
+			firebase.auth().onAuthStateChanged(function(user) {
+				if (user) {
+					userLogin = user;
+					alert("User is logined")
+				} else {
+					userLogin = null;
+					alert("User is not logined yet.");
+				}
+			});
+			$("#SignInFB").click(function(){   	
+				firebase.auth().signInFBWithPopup(provider).then(function(result) {
+					// 取得FB Token，可以使用於FB API中
+					var token = result.credential.accessToken;
+					// 使用者資料
+					userLogin = result.user;
+					alert("成功使用 Facebook 帳號登入！");
+				}).catch(function(error) {
+					// Handle Errors here.
+					var errorCode = error.code;
+					var errorMessage = error.message;
+					// The email of the user's account used.
+					var email = error.email;
+					// The firebase.auth.AuthCredential type that was used.
+					var credential = error.credential;
+					alert(errorMessage)
+				});
+			});
+			$("#SignOut").click(function(){
+				firebase.auth().signOut().then(function() {
+					console.log("User sign out!");
+				}, function(error) {
+					console.log("User sign out error!");
+				})
+			});
+			$("#getUID").click(function(){
+				if (userLogin)
+					alert(userLogin['uid']);
+			});
+		});
+	</script>
+<!--===============================================================================================-->
+	<script>
+		$(document).ready(function(){  
+			var provider = new firebase.auth.GoogleAuthProvider();
+			//所需授權的Scope 
+			provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+			provider.setCustomParameters({'login_hint': 'user@example.com'});
+			var userLogin;
+			firebase.auth().onAuthStateChanged(function(user) {
+				if (user) {
+					userLogin = user;
+					alert("User is logined")
+				} else {
+					userLogin = null;
+					alert("User is not logined yet.");
+				}
+			});
+			$("#SignIngoogle").click(function(){
+				firebase.auth().signIngoogleWithPopup(provider).then(function(result) {
+					// 取得google Token，可以使用於google API中
+					var token = result.credential.accessToken;
+					// 使用者資料
+					userLogin = result.user;
+					alert("成功使用 Google 帳號登入！");
+				}).catch(function(error) {
+					// Handle Errors here.
+					var errorCode = error.code;
+					var errorMessage = error.message;
+					// The email of the user's account used.
+					var email = error.email;
+					// The firebase.auth.AuthCredential type that was used.
+					var credential = error.credential;
+					alert(errorMessage)
+				});
+			});
+			$("#SignOut").click(function(){
+				firebase.auth().signOut().then(function() {
+					console.log("User sign out!");
+				}, function(error) {
+					console.log("User sign out error!");
+				})
+			});
+			$("#getUID").click(function(){
+				if (userLogin)
+					alert(userLogin['uid']);
+			});	
+		});	
+	</script>
 <!--===============================================================================================-->
 </head>
 <body>
-	<script type="text/javascript">
-		function login() {
-			username = document.getElementsByName("username")[0].value;
-			password = document.getElementsByName("pass")[0].value;
-			//console.log(username);
-			//console.log(password);
-
-			var xhttp = new XMLHttpRequest();
-			xhttp.onreadystatechange = function() {
-				if (this.readyState == 4 && this.status == 200) {
-					console.log(this.responseText);
-					if(this.responseText == 1){
-						document.getElementById("div2").style.display=""
-						document.getElementById("div1").style.display="None"
-					}
-					else{
-						document.getElementById("word").innerHTML = "帳號或密碼有誤"
-					}
-
-				}
-			};
-			xhttp.open("GET", "login.php?"+
-						"username="+username+
-						"&password="+password
-						, true);
-			xhttp.send();
-		}
-		function changePage(pageName){
-			location.href=pageName+"?username="+username
-								  +"&password="+password
-		}
-	</script>
-
-	<script type="text/javascript">
-		var url = new URL(location.href);
-		username = url.searchParams.get('username'); 
-		password = url.searchParams.get('password'); 
-		console.log("start", username, password)
-		if(username == null || username == "null"){
-			
-		}
-		else{
-			document.getElementById("div2").style.display=""
-			document.getElementById("div1").style.display="None"
-		}
-	</script>
-
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100 p-b-160 p-t-50" id="div1" >
@@ -100,18 +186,18 @@
 					</span>
 					
 					<div class="wrap-input100 rs1 validate-input" data-validate = "Username is required">
-						<input class="input100" type="text" name="username">
-						<span class="label-input100">Username</span>
+						<input class="input100" type="text" >
+						<span class="label-input100">Email</span>
 					</div>
 					
 					
 					<div class="wrap-input100 rs2 validate-input" data-validate="Password is required">
-						<input class="input100" type="password" name="pass">
+						<input class="input100" type="pewd" >
 						<span class="label-input100">Password</span>
 					</div>
 
 					<div class="container-login100-form-btn">
-						<button class="login100-form-btn" onclick="login()">
+						<button class="login100-form-btn" id="SignIn">
 							Login
 						</button>
 					</div>
@@ -122,13 +208,13 @@
 						</a>
 					</div>
 					<div class="text-center w-full p-t-23">
-						<a href="signIn_google.html" class="txt1">
-							<i> 從google登入</i>
+						<a class="txt1" id="SignIngoogle">
+							<i>從google登入</i>
 						</a>
 					</div>
 					<div class="text-center w-full p-t-23">
-						<a href="signIn_fb.html" class="txt1">
-							<i> 從facebook登入</i>
+						<a class="txt1" id="SignInFB">
+							<i>從facebook登入</i>
 						</a>
 					</div>
 				</div>
